@@ -1,4 +1,12 @@
-deploy_to_google_cloud:
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    branches: [ main ]
+jobs:
+  deploy_to_google_cloud:
     name: Deploy to Google Cloud Platform
     runs-on: ubuntu-latest
     steps:
