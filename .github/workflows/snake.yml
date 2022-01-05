@@ -1,40 +1,114 @@
 on:
   push:
-    branches: [ main ]
-    paths-ignore:
-      - '*.md'
+    branches:
+    - main
   pull_request:
-    branches: [ main ]
-jobs:
-  deploy_to_google_cloud:
-    name: Deploy to Google Cloud Platform
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v2
-      # Setup gcloud CLI
-      - name: setup gcloud CLI
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.GCP_PROJECT }}
-          # this is the json key of the service account created on the project
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
-          export_default_credentials: true
-      # Deploy the app using kubernetes (deploy.yml)
-      - name: Deploy
-        # To run kubectl commands against a cluster created in Cloud Console, 
-        # from another computer, or by another member of the project, 
-        # you need to generate a kubeconfig entry in your environment.
-        # The rolling deployment is the standard default deployment to Kubernetes. 
-        # It works by slowly, one by one, replacing pods of the previous version of 
-        # your application with pods of the new version without any cluster downtime
-        run: |
-          gcloud config set compute/region europe-west4
-          gcloud config set compute/zone europe-west4-a
-          gcloud container clusters get-credentials node-demo-k8s
-          envsubst < deploy.yml
-          envsubst < deploy.yml | kubectl apply -f -
-          kubectl rollout status -w deployment/nodejs-demo-app
-          kubectl get all
 
+jobs:
+
+  build_test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: setup node
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # install applicaion dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+          npm ci 
+
+      # build and test the apps     
+      - name: build
+        run: |
+          npm run build
+          npm run test
+
+  push_to_Docker_Hub:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      # build docker image and push to docker hub
+      # only if the app build and test successfully
+      needs: [build_test]
+
+      steps:
+        - name: checkout repo
+          uses: actions/checkout@v2
+
+        - name: Login to DockerHub
+          uses: docker/login-action@v1
+          with:
+            username: runalsh
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+        - name: Build and push
+          uses: docker/build-push-action@v2
+          with:
+            context: ./
+            file: ./Dockerfile
+            push: true
+            tags: runalsh/py-exam:latest
+          
+        - name: Run the image in a container
+          uses: addnab/docker-run-action@v3
+          with:
+            image: runalsh/py-exam:latest
+            run: |
+              echo "runing the docker image"
+              echo "Testing the nodejs  app endpoints"
+              echo ${{ steps.docker_build.outputs.digest }}
+
+
+
+
+
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # # Checks that all Terraform configuration files adhere to a canonical format
+    # - name: Terraform Format
+    #   run: terraform fmt -check
+
+    # # Generates an execution plan for Terraform
+    # - name: Terraform Plan
+    #   run: terraform plan
+
+    #   # On push to main, build or change infrastructure according to Terraform configuration files
+    #   # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    # - name: Terraform Apply
+    #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    #   run: terraform apply -auto-approve
 
