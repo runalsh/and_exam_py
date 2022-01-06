@@ -45,7 +45,7 @@ jobs:
         continue-on-error: true
 
   pytest:
-    # needs: initkube
+    needs: initkube
     runs-on: ubuntu-latest
 
     steps:
