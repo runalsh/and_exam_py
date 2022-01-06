@@ -1,12 +1,12 @@
-"""Simple flask app which print message"""
 from flask import Flask
+
+
+
+
 app = Flask(__name__)
-
 @app.route('/')
-def hello_world():
-    """Function which serve '/'"""
-    return 'Hello, world 1!!!'
+def hi():
+    return 'its snake app! pshshshshshsh!!!!!!!!'
 
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=False)
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port = 8082)
