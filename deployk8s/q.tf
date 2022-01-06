@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = "${{ GCP_CREDENTIALS }}"
+  credentials = "${{ secrets.GCP_CREDENTIALS }}"
   project     = var.project_id
   region      = var.region
   # version = "~> 3.40.0"
