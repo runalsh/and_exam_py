@@ -1,4 +1,4 @@
-credentials        = "${{ secrets.GCP_CREDENTIALS }}"
+credentials        = "${secrets.GCP_CREDENTIALS}"
 project_id = "ecstatic-galaxy-337317"
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
