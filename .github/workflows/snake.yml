@@ -1,3 +1,4 @@
+#11
 on:
   push:
     branches: [ main ]
@@ -16,12 +17,9 @@ jobs:
     defaults:
       run:
         working-directory: deployk8s
+        shaell: bash
     name: Terraform
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
