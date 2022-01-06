@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = "${file(var.credentials)}"
+  credentials = "${{ GCP_CREDENTIALS }}"
   project     = var.project_id
   region      = var.region
   # version = "~> 3.40.0"
@@ -93,5 +93,4 @@ module "gke" {
     },
   ]
 }
-
 
