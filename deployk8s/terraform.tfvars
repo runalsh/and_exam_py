@@ -9,3 +9,5 @@ min_count          = 1
 max_count          = 2
 disk_size_gb       = 10
 service_account    = "serviceacc@ecstatic-galaxy-337317.iam.gserviceaccount.com"
+
+ 
