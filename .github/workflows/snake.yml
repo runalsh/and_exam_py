@@ -164,7 +164,7 @@ jobs:
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/ecstatic-galaxy-337317/simple-web-app:$GITHUB_SHA"
 
   # deploy_to_google_cloud:
     # name: Deploy to GCP
