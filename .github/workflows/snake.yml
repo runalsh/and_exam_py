@@ -11,8 +11,8 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  initkube:
+    name: Terraform
     runs-on: ubuntu-latest
     environment: production
     defaults:
