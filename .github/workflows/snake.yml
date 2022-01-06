@@ -156,7 +156,7 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "gcr.io/$PROJECT_ID/simple-web-app:$GITHUB_SHA" \
+          --tag "gcr.io/ecstatic-galaxy-337317/simple-web-app:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
