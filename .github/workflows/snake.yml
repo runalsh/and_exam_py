@@ -97,7 +97,7 @@ jobs:
           uses: docker/login-action@v1
           with:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_PASS }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
       
         # - name: Build and push
           # uses: docker/build-push-action@v2
@@ -110,15 +110,19 @@ jobs:
         # - name: Run the image in a container
           # uses: addnab/docker-run-action@v3
           # with:
-            # image: ${{ secrets.DOCKERHUB_USERNAME }}/py-exam:latest
+            # image: runalsh/py-exam:latest
             # run: |
               # echo "runing the docker image"
-
+-
+        -name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v1
+          
+        
         - name: Extract metadata (tags, labels) for Docker
           id: meta
           uses: docker/metadata-action@v3
           with:
-            images: ${{ secrets.DOCKERHUB_USERNAME }}/py-exam:latest
+            images: runalsh/py-exam:latest
       
         - name: Build and push Docker imagee
           uses: docker/build-push-action@v2
