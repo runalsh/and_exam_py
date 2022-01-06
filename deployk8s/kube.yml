@@ -1,0 +1,87 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "py-app"
+  namespace: "default"
+  labels:
+    app: "py-app"
+spec:
+  replicas: 4
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: "py-app"
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate    
+  template:
+    metadata:
+      labels:
+        app: "py-app"
+    spec:
+      containers:
+      - name: "myappimagefromdocker"
+        image: "gcr.io/ecstatic-galaxy-337317/py-app:latest"
+        # resources:
+          # limits: 
+            # memory: 64Mi
+            # cpu: "250m"
+          # requests:
+            # memory: 32Mi
+            # cpu: "200m"
+        ports:
+        - containerPort: 8082
+# ---		
+# apiVersion: "autoscaling/v2beta1"
+# kind: "HorizontalPodAutoscaler"
+# metadata:
+  # namespace: "default"
+  # minReplicas: 1
+  # maxReplicas: 5
+  # labels:
+    # app: "py-app"
+  # metrics:
+  # - type: "Resource"
+    # resource:
+      # name: "cpu"
+      # targetAverageUtilization: 80
+      
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "py-app"
+  annotations:
+    networking.gke.io/load-balancer-type: "External"
+  labels:
+    app: "py-app"
+spec:
+  type: LoadBalancer
+  selector:
+    app: "py-app"
+  ports:
+  - port: 8080
+    targetPort: 8082
+    protocol: TCP
+
+---
+apiVersion: v1
+items:
+- apiVersion: autoscaling/v1
+  kind: HorizontalPodAutoscaler
+  metadata:
+    name: autoscaler
+    namespace: default
+  spec:
+    maxReplicas: 10
+    minReplicas: 1
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: autoscaler
+    targetCPUUtilizationPercentage: 50
+kind: List
