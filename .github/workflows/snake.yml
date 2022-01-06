@@ -1,17 +1,14 @@
 on:
   push:
-    branches:
-    - main
-       paths-ignore:
-        - '*.md'
-        - '.github/workflows/**'
-
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+      - '.github/workflows/**'
   pull_request:
-        branches:
-        - main
-       paths-ignore:
-        - '*.md'
-        - '.github/workflows/**'
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+      - '.github/workflows/**'
         
         
 jobs:
