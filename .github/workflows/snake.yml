@@ -1,3 +1,4 @@
+
 on:
   push:
     branches: [ main ]
@@ -131,10 +132,9 @@ jobs:
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
-    - name: Env GCP proj to Terraform
+    - name: Publish and Env GCP proj to Terraform
       env:
          GOOGLE_PROJ: ${{ secrets.GCP_PROJECT }}
-    - name: Publish
       run: |-
         docker push "gcr.io/$GOOGLE_PROJ/py-app:$GITHUB_SHA"
 
