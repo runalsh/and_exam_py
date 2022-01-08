@@ -1,4 +1,3 @@
-
 on:
   push:
     branches: [ main ]
@@ -104,6 +103,7 @@ jobs:
     needs: pylint
     name: Setup, build, publish, and deploy
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -126,14 +126,13 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "gcr.io/$project_id/py-app:$GITHUB_SHA" \
+          --tag "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
     - name: Publish and Env GCP proj to Terraform
-      
       run: |-
-        docker push "gcr.io/$project_id/py-app:$GITHUB_SHA"
+        docker push "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:$GITHUB_SHA"
 
   deploykube:
     name: Deploy to GCP
