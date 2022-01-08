@@ -1,17 +1,17 @@
 ---
-apiVersion: "apps/v1"
-kind: "Deployment"
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: "py-app"
-  namespace: "default"
+  name: py-app
+  namespace: default
   labels:
-    app: "py-app"
+    app: py-app
 spec:
   replicas: 4
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: "py-app"
+      app: py-app
   strategy:
     rollingUpdate:
       maxSurge: 50%
@@ -20,12 +20,12 @@ spec:
   template:
     metadata:
       labels:
-        app: "py-app"
+        app: py-app
     spec:
       containers:
-      - name: "myappimagefromdocker"
-        image: "gcr.io/PROJECT_ID/py-app:latest"
-        imagePullPolicy: IfNotPresent
+      - name: py-app
+        image: gcr.io/winter-cab-337613/py-app:latest
+        imagePullPolicy: Allways
         # resources:
           # limits: 
             # memory: 64Mi
@@ -55,15 +55,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "py-app"
+  name: py-app
   annotations:
-    networking.gke.io/load-balancer-type: "External"
+    networking.gke.io/load-balancer-type: External
   labels:
-    app: "py-app"
+    app: py-app
 spec:
   type: LoadBalancer
   selector:
-    app: "py-app"
+    app: py-app
   ports:
   - port: 8080
     targetPort: 8082
