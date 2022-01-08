@@ -143,7 +143,7 @@ jobs:
       run:
         working-directory: deployk8s
         shell: bash 
-    # needs: dockerimagepush
+    needs: dockerimagepush
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
