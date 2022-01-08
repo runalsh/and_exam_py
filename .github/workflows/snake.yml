@@ -9,6 +9,11 @@ on:
     paths-ignore:
       - '*.md'
       # - '.github/workflows/**'
+      
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  IMAGE: py-app
+ 
 jobs:
   initkube:
     defaults:
@@ -160,7 +165,7 @@ jobs:
         run: |
           gcloud config set compute/region ${{ secrets.GKE_ZONE }} 
           # gcloud config set compute/zone ${{ secrets.GKE_ZONE }}a
-          gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}} 
+          gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}}
           envsubst < kube.yml
           envsubst < kube.yml | kubectl apply -f -
           kubectl rollout restart deployment/py-app
