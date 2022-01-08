@@ -23,9 +23,8 @@ spec:
         app: "py-app"
     spec:
       containers:
-      - name: "myappimagefromdocker"
-        command: [ "/bin/sh", "-c", "cat project_id.json > gcp_proj" ]
-        image: "gcr.io/${gcp_proj}/py-app:latest"
+      - name: "myappimagefromdocker
+        image: "gcr.io/${project_id}/py-app:latest"
         # resources:
           # limits: 
             # memory: 64Mi
