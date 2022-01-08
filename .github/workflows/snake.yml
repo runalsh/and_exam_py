@@ -136,35 +136,35 @@ jobs:
       run: |-
         docker push "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:$GITHUB_SHA"
 
-  # deploykube:
-    # name: Deploy to GCP
-    # runs-on: ubuntu-latest
-    # defaults:
-      # run:
-        # working-directory: deployk8s
-        # shell: bash 
-    # # needs: dockerimagepush
-    # steps:
-      # - name: checkout repo
-        # uses: actions/checkout@v2
+  deploykube:
+    name: Deploy to GCP
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: deployk8s
+        shell: bash 
+    # needs: dockerimagepush
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
 
-      # # Setup gcloud CLI
-      # - name: setup gcloud CLI
-        # uses: google-github-actions/setup-gcloud@master
-        # with:
-          # project_id: ${{ secrets.GCP_PROJECT }}
-          # # this is the json key of the service account created on the project
-          # service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
-          # export_default_credentials: true
+      # Setup gcloud CLI
+      - name: setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          # this is the json key of the service account created on the project
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
+          export_default_credentials: true
 
-      # # Deploy the app using kubernetes (deploy.yml)
-      # - name: Deploy
-        # run: |
-          # gcloud config set compute/region ${{ secrets.GKE_ZONE }} 
-          # # gcloud config set compute/zone ${{ secrets.GKE_ZONE }}a
-          # gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}} #-a  нужна ли тут a а вдруг нет и просто зона
-          # envsubst < kube.yml
-          # envsubst < kube.yml | kubectl apply -f -
-          # kubectl rollout restart deployment/py-app
-          # kubectl rollout status -w deployment/py-app
-          # kubectl get all
+      # Deploy the app using kubernetes (deploy.yml)
+      - name: Deploy
+        run: |
+          gcloud config set compute/region ${{ secrets.GKE_ZONE }} 
+          # gcloud config set compute/zone ${{ secrets.GKE_ZONE }}a
+          gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}} #-a  нужна ли тут a а вдруг нет и просто зона
+          envsubst < kube.yml
+          envsubst < kube.yml | kubectl apply -f -
+          kubectl rollout restart deployment/py-app
+          kubectl rollout status -w deployment/py-app
+          kubectl get all
