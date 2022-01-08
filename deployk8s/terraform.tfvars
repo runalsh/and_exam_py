@@ -1,4 +1,5 @@
 project_id = "dark-caldron-337608"
+credentials = $(credentials)
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
 name               = "py-gke-cluster"
