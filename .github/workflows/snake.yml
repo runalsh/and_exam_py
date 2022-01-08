@@ -131,9 +131,7 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest" \
-          --build-arg GITHUB_SHA="$GITHUB_SHA" \
-          --build-arg GITHUB_REF="$GITHUB_REF" \
+          --tag "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
           .
     - name: Publish and Env GCP proj to Terraform
       run: |-
