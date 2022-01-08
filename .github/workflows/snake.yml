@@ -11,7 +11,7 @@ on:
       # - '.github/workflows/**'
       
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
   IMAGE: py-app
  
 jobs:
@@ -168,6 +168,6 @@ jobs:
           gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}}
           envsubst < kube.yml
           envsubst < kube.yml | kubectl apply -f -
-          kubectl rollout restart deployment/py-app
-          kubectl rollout status -w deployment/py-app
+          kubectl rollout restart deployment/$IMAGE
+          kubectl rollout status -w deployment/$IMAGE
           kubectl get all
