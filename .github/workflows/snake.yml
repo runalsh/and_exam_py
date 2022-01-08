@@ -11,56 +11,56 @@ on:
       # - '.github/workflows/**'
       
 env:
-  # GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
   GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   IMAGE: py-app
  
 jobs:
-  # initkube:
-    # defaults:
-      # run:
-        # working-directory: deployk8s
-        # shell: bash
-    # name: Terraform
+  initkube:
+    defaults:
+      run:
+        working-directory: deployk8s
+        shell: bash
+    name: Terraform
 
-    # runs-on: ubuntu-latest
-    # steps:
-      # - name: Checkout
-        # uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
         
-      # - name: Env GCP creds to Terraform
-        # env:
-         # GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-        # run: |
-              # echo "$GOOGLE_CREDENTIALS" > credentials.json
-              # ls -la
+      - name: Env GCP creds to Terraform
+        env:
+         GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+              echo "$GOOGLE_CREDENTIALS" > credentials.json
+              ls -la
 
-      # - name: Env proj name to Terraform
-        # env:
-         # PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
-        # run: |
-              # echo "$PROJECT_NAME" > project_id.json
-              # ls -la
+      - name: Env proj name to Terraform
+        env:
+         PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
+        run: |
+              echo "$PROJECT_NAME" > project_id.json
+              ls -la
 
-      # - name: Setup Terraform
-        # uses: hashicorp/setup-terraform@v1
-       # # with:
-       # #    cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-       # # убрал, кг\ам
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+       # with:
+       #    cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+       # убрал, кг\ам
 
-      # - name: Terraform Init
-        # run: terraform init
+      - name: Terraform Init
+        run: terraform init
         
-      # - name: Terraform Format
-        # run: terraform fmt -check
-        # continue-on-error: true
+      - name: Terraform Format
+        run: terraform fmt -check
+        continue-on-error: true
 
-      # - name: Terraform Plan
-        # run: terraform plan -lock=false
+      - name: Terraform Plan
+        run: terraform plan -lock=false
 
-      # - name: Terraform Apply
-    # #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        # run: terraform apply -lock=false -auto-approve
+      - name: Terraform Apply
+    #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -lock=false -auto-approve
 
   # pytest:
     # needs: initkube
@@ -140,35 +140,35 @@ jobs:
       # run: |-
         # docker push "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
 
-  deploykube:
-    name: Deploy to GCP
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: deployk8s
-        shell: bash 
+  # deploykube:
+    # name: Deploy to GCP
+    # runs-on: ubuntu-latest
+    # defaults:
+      # run:
+        # working-directory: deployk8s
+        # shell: bash 
     # needs: dockerimagepush
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v2
+    # steps:
+      # - name: checkout repo
+        # uses: actions/checkout@v2
 
-      # Setup gcloud CLI
-      - name: setup gcloud CLI
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          project_id: ${{ secrets.GCP_PROJECT }}
-          # this is the json key of the service account created on the project
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
-          export_default_credentials: true
+      # # Setup gcloud CLI
+      # - name: setup gcloud CLI
+        # uses: google-github-actions/setup-gcloud@v0
+        # with:
+          # project_id: ${{ secrets.GCP_PROJECT }}
+          # # this is the json key of the service account created on the project
+          # service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
+          # export_default_credentials: true
 
-      # Deploy the app using kubernetes (deploy.yml)
-      - name: Deploy
-        run: |
-          gcloud config set compute/region ${{ secrets.GKE_ZONE }} 
-          # gcloud config set compute/zone ${{ secrets.GKE_ZONE }}a
-          gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}}
-          envsubst < kube.yml
-          envsubst < kube.yml | kubectl apply -f -
-          kubectl rollout restart deployment/$IMAGE
-          kubectl rollout status -w deployment/$IMAGE
-          kubectl get all
+      # # Deploy the app using kubernetes (deploy.yml)
+      # - name: Deploy
+        # run: |
+          # gcloud config set compute/region ${{ secrets.GKE_ZONE }} 
+          # # gcloud config set compute/zone ${{ secrets.GKE_ZONE }}a
+          # gcloud container clusters get-credentials py-gke-cluster --region ${{secrets.GKE_ZONE}}
+          # envsubst < kube.yml
+          # envsubst < kube.yml | kubectl apply -f -
+          # kubectl rollout restart deployment/$IMAGE
+          # kubectl rollout status -w deployment/$IMAGE
+          # kubectl get all
