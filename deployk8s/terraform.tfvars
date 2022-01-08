@@ -1,4 +1,4 @@
-project_id = "dark-caldron-337608"
+project_id = "winter-cab-337613"
 credentials = "credentials.json"
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
@@ -8,4 +8,4 @@ initial_node_count = 1
 min_count          = 1
 max_count          = 2
 disk_size_gb       = 10
-service_account    = "blabla@dark-caldron-337608.iam.gserviceaccount.com"
+service_account    = "blabla@winter-cab-337613.iam.gserviceaccount.com"
