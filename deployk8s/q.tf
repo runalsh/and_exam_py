@@ -83,7 +83,7 @@ terraform {
   backend "gcs" {
     bucket          = "winter-cab-337613"
     prefix          = "/terraform.tfstate"
-    credentials     = $GCP_CREDENTIALS
+    credentials     = "$GCP_CREDENTIALS"
   }
 }
 
