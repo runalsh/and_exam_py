@@ -1,15 +1,14 @@
 provider "google" {
-  # credentials = "${(var.credentials)}"
-  credentials = secrets.GCP_CREDENTIALS
+  credentials = var.credentials
   project     = var.project_id
   region      = var.region
   # version = "~> 3.40.0"
 }
 
-# variable "credentials" {
-  # type        = string
-  # description = "Location of the credential keyfile."
-# }
+variable "credentials" {
+  type        = string
+  description = "Location of the credential keyfile."
+}
 
 variable "project_id" {
   type        = string
