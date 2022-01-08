@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: py-app
-        image: runalsh/py-exam:latest
+        image: gcr.io/winter-cab-337613/py-app
         imagePullPolicy: Always
         # resources:
           # limits: 
