@@ -1,4 +1,4 @@
-project = "winter-cab-337613"
+project_id = "winter-cab-337613"
 credentials = "credentials.json"
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
