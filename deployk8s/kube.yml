@@ -24,8 +24,8 @@ spec:
     spec:
       containers:
       - name: py-app
-        image: gcr.io/winter-cab-337613/py-app:latest
-       # imagePullPolicy: Always
+        image: gcr.io/PROJECT_ID/IMAGE:latest
+        imagePullPolicy: Always
         # resources:
           # limits: 
             # memory: 64Mi
