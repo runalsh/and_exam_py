@@ -1,5 +1,5 @@
 project_id = "winter-cab-337613"
-credentials = "credentials.json"
+credentials = "$GCP_CREDENTIALS"
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
 name               = "py-gke-cluster"
@@ -9,4 +9,3 @@ min_count          = 1
 max_count          = 2
 disk_size_gb       = 10
 service_account    = "blabla@winter-cab-337613.iam.gserviceaccount.com"
-
