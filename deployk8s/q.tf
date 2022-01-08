@@ -60,6 +60,38 @@ variable "initial_node_count" {
   description = "The number of nodes to create in this cluster's default node pool."
 }
 
+
+resource "google_storage_bucket" "state-bucket" {
+  name     = var.project_id
+  location = "${var.region}"
+
+  versioning {
+    enabled = true
+  }
+}
+
+# здесь нельзя встаить вариэйблс. почему? да хз, чтобы страдали наверное
+# можно обойти создать вручную через gcloud до инициализации terra, надо подумать как ещё 
+# todo
+
+#test
+#resource "random_id" "suffix" {
+#  byte_length               = 4
+#}
+
+terraform {
+  backend "gcs" {
+    bucket          = "winter-cab-337613"
+    prefix          = "/terraform.tfstate"
+    credentials     = "credentials.json"
+  }
+}
+
+output "bucket" {
+    value = "${google_storage_bucket.state-bucket.name}"
+    description = "Terraform backend storage bucket"
+}
+
 module "gke" {
   source                     = "terraform-google-modules/kubernetes-engine/google"
   project_id                 = var.project_id
