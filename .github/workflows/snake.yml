@@ -16,12 +16,18 @@ jobs:
         working-directory: deployk8s
         shell: bash
     name: Terraform
-    env:
-       GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: hui
+        env:
+         GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+              echo "$GOOGLE_CREDENTIALS" > credentials.json
+
         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -31,10 +37,6 @@ jobs:
       - name: Terraform Init
         run: terraform init
         
-      - name: hui
-        run: |
-              echo "${{ secrets.GCP_CREDENTIALS }}" > credentials.json"
-
       - name: Terraform Format
         run: terraform fmt -check
         continue-on-error: true
