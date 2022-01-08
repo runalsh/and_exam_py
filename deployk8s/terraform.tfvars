@@ -1,5 +1,5 @@
 project_id = "winter-cab-337613"
-credentials = "$GCP_CREDENTIALS"
+credentials = "credentials.json"
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
 name               = "py-gke-cluster"
