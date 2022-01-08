@@ -1,5 +1,5 @@
 project_id = "dark-caldron-337608"
-credentials = ${{secrets.GCP_CREDENTIALS}}
+credentials = $gcp_cred
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
 name               = "py-gke-cluster"
