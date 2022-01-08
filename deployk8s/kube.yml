@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: "myappimagefromdocker"
-        image: "gcr.io/ecstatic-galaxy-337317/py-app:latest"
+        image: "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
         # resources:
           # limits: 
             # memory: 64Mi
@@ -83,5 +83,5 @@ items:
       apiVersion: apps/v1
       kind: Deployment
       name: autoscaler
-    targetCPUUtilizationPercentage: 50
+    targetCPUUtilizationPercentage: 80
 kind: List
