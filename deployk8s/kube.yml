@@ -24,7 +24,10 @@ spec:
     spec:
       containers:
       - name: "myappimagefromdocker"
-        image: "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
+        env:
+        - name: gcp_proj
+          valueFrom: project_id.json
+        image: "gcr.io/${gcp_proj}/py-app:latest"
         # resources:
           # limits: 
             # memory: 64Mi
