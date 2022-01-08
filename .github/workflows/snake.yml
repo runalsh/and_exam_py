@@ -25,7 +25,7 @@ jobs:
         
       - name: Store cred from GA Secrets to file
         run: |
-            echo ${{ GCP_CREDENTIALS }} > credentials.json
+            echo ${{ secrets.GCP_CREDENTIALS }} > credentials.json
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
