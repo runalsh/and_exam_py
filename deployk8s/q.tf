@@ -6,10 +6,10 @@ provider "google" {
   # version = "~> 3.40.0"
 }
 
-variable "credentials" {
-  type        = string
-  description = "Location of the credential keyfile."
-}
+# variable "credentials" {
+  # type        = string
+  # description = "Location of the credential keyfile."
+# }
 
 variable "project_id" {
   type        = string
