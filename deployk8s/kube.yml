@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: py-app
+  name: $IMAGE
   namespace: default
   labels:
-    app: py-app
+    app: $IMAGE
 spec:
   replicas: 4
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: py-app
+      app: $IMAGE
   strategy:
     rollingUpdate:
       maxSurge: 50%
@@ -20,10 +20,10 @@ spec:
   template:
     metadata:
       labels:
-        app: py-app
+        app: $IMAGE
     spec:
       containers:
-      - name: py-app
+      - name: $IMAGE
         image: gcr.io/$PROJECT_ID/$IMAGE:latest
         imagePullPolicy: Always
         # resources:
@@ -43,7 +43,7 @@ spec:
   # minReplicas: 1
   # maxReplicas: 5
   # labels:
-    # app: "py-app"
+    # app: "$IMAGE"
   # metrics:
   # - type: "Resource"
     # resource:
@@ -55,15 +55,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: py-app
+  name: $IMAGE
   annotations:
     networking.gke.io/load-balancer-type: External
   labels:
-    app: py-app
+    app: $IMAGE
 spec:
   type: LoadBalancer
   selector:
-    app: py-app
+    app: $IMAGE
   ports:
   - port: 8080
     targetPort: 8082
