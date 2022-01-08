@@ -1,6 +1,6 @@
 provider "google" {
   credentials = var.credentials
-  project     = var.project_id
+  project     = file("project_id.json")
   region      = var.region
   # version = "~> 3.40.0"
 }
