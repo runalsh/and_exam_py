@@ -22,7 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-        
       - name: Env GCP creds to Terraform
         env:
          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
