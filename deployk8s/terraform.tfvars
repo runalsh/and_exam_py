@@ -1,4 +1,4 @@
-project_id = file("project_id.json")
+
 credentials = "credentials.json"
 region     = "europe-west4"
 zones              = ["europe-west4-a", "europe-west4-b"]
