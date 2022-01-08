@@ -10,7 +10,6 @@ on:
       - '*.md'
       # - '.github/workflows/**'
 
-
 jobs:
   initkube:
     defaults:
