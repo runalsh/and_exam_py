@@ -24,9 +24,7 @@ spec:
     spec:
       containers:
       - name: "myappimagefromdocker"
-        env:
-        - name: gcp_proj
-          valueFrom: project_id.json
+        command: [ "/bin/sh", "-c", "cat project_id.json > gcp_proj" ]
         image: "gcr.io/${gcp_proj}/py-app:latest"
         # resources:
           # limits: 
