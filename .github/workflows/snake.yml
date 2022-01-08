@@ -132,7 +132,7 @@ jobs:
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
     - name: Env GCP proj to Terraform
-        env:
+      env:
          GOOGLE_PROJ: ${{ secrets.GCP_PROJECT }}
     - name: Publish
       run: |-
