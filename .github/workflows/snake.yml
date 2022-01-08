@@ -23,10 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Store cred from GA Secrets to file
-        run: |
-             JSON_KEY=$(cat ${{ secrets.GCP_CREDENTIALS }} | tr '\n' ' ')
-             echo $JSON_KEY > credentials.json
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         # with:
