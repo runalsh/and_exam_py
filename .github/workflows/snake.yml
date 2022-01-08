@@ -22,11 +22,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: Store cred from GA Secrets to file
+        run:  echo ${{ GCP_CREDENTIALS }} > credentials.json
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        # with:
+          # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
         run: terraform init
