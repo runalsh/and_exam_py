@@ -8,4 +8,4 @@ initial_node_count = 1
 min_count          = 1
 max_count          = 2
 disk_size_gb       = 10
-service_account    = "blablabla@dark-caldron-337608.iam.gserviceaccount.com"
+service_account    = "blabla@dark-caldron-337608.iam.gserviceaccount.com"
