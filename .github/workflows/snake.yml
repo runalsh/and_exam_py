@@ -28,21 +28,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      # - name: Env GCP creds to Terraform
-        # env:
-         # GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-        # run: |
-              # echo "$GOOGLE_CREDENTIALS" > credentials.json
-              # ls -la
+      - name: Env GCP creds to Terraform
+        env:
+         GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+              echo "$GOOGLE_CREDENTIALS" > credentials.json
+              ls -la
 
       # дикая дичь. проаганда env не влияет на последующие файлы. надо поправить как-то 
       # todo
-      - name: Env proj name to Terraform
-        env:
-         PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
-        run: |
-              echo "$PROJECT_NAME" > project_id.json
-              ls -la
+      
+       # - name: Env proj name to Terraform
+        # env:
+         # PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
+        # run: |
+              # echo "$PROJECT_NAME" > project_id.json
+              # ls -la
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
