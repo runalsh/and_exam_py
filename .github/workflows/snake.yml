@@ -9,8 +9,6 @@ on:
     paths-ignore:
       - '*.md'
       # - '.github/workflows/**'
-
-
 jobs:
   initkube:
     defaults:
@@ -19,7 +17,7 @@ jobs:
         shell: bash
     name: Terraform
     env:
-        credentials: ${{ secrets.GCP_CREDENTIALS }}
+       GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,6 +30,10 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        
+      - name: hui
+        run: |
+              echo "${{ secrets.GCP_CREDENTIALS }}" > credentials.json"
 
       - name: Terraform Format
         run: terraform fmt -check
