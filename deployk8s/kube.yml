@@ -24,7 +24,8 @@ spec:
     spec:
       containers:
       - name: "myappimagefromdocker"
-        image: "gcr.io/winter-cab-337613/py-app:latest"
+        image: "gcr.io/PROJECT_ID/py-app:latest"
+        imagePullPolicy: IfNotPresent
         # resources:
           # limits: 
             # memory: 64Mi
