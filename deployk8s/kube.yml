@@ -1,3 +1,4 @@
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -24,7 +25,7 @@ spec:
     spec:
       containers:
       - name: $IMAGE
-        image: gcr.io/$PROJECT_ID/$IMAGE:latest
+        image: gcr.io/$GCP_PROJECT/$IMAGE:latest
         imagePullPolicy: Always
         # resources:
           # limits: 
