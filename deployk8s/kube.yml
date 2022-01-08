@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: py-app
-        image: gcr.io/PROJECT_ID/IMAGE:latest
+        image: gcr.io/$PROJECT_ID/$IMAGE:latest
         imagePullPolicy: Always
         # resources:
           # limits: 
