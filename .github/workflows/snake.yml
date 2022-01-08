@@ -119,7 +119,7 @@ jobs:
     - name: Build
       run: |-
         docker build \
-          --tag "gcr.io/dark-caldron-337608/py-app:$GITHUB_SHA" \
+          --tag "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           .
