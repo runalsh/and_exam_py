@@ -35,12 +35,12 @@ jobs:
               echo "$GOOGLE_CREDENTIALS" > credentials.json
               ls -la
 
-      - name: Env proj name to Terraform
-        env:
-         PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
-        run: |
-              echo "$PROJECT_NAME" > project_id.json
-              ls -la
+      # - name: Env proj name to Terraform
+        # env:
+         # PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
+        # run: |
+              # echo "$PROJECT_NAME" > project_id.json
+              # ls -la
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
