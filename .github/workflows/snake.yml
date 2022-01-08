@@ -11,7 +11,8 @@ on:
       # - '.github/workflows/**'
       
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
   IMAGE: py-app
  
 jobs:
@@ -29,14 +30,14 @@ jobs:
         
       # - name: Env GCP creds to Terraform
         # env:
-         # GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+         # GOOGLE_CREDENTIALS: $GCP_CREDENTIALS
         # run: |
               # echo "$GOOGLE_CREDENTIALS" > credentials.json
               # ls -la
 
       # - name: Env proj name to Terraform
         # env:
-         # PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
+         # PROJECT_NAME: $GCP_PROJECT
         # run: |
               # echo "$PROJECT_NAME" > project_id.json
               # ls -la
@@ -115,8 +116,8 @@ jobs:
 
     # - uses: google-github-actions/setup-gcloud@v0.2.0
       # with:
-        # service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-        # project_id: ${{ secrets.GCP_PROJECT }}
+        # service_account_key: $GCP_CREDENTIALS
+        # project_id: $GCP_PROJECT
 
     # - run: |-
         # gcloud --quiet auth configure-docker
@@ -126,18 +127,18 @@ jobs:
       # # with:
         # # cluster_name: pypypypy-cluster # ${{ env.GKE_CLUSTER }}
         # # location: europe-central2-a # ${{ env.GKE_ZONE }}
-        # # credentials: ${{ secrets.GCP_CREDENTIALS }}
+        # # credentials: $GCP_CREDENTIALS
 
     # - name: Build
       # run: |-
         # docker build \
-          # --tag "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest" \
+          # --tag "gcr.io/$GCP_PROJECT/py-app:latest" \
           # --build-arg GITHUB_SHA="$GITHUB_SHA" \
           # --build-arg GITHUB_REF="$GITHUB_REF" \
           # .
     # - name: Publish and Env GCP proj to Terraform
       # run: |-
-        # docker push "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
+        # docker push "gcr.io/$GCP_PROJECT/py-app:latest"
 
   deploykube:
     name: Deploy to GCP
@@ -155,9 +156,9 @@ jobs:
       - name: setup gcloud CLI
         uses: google-github-actions/setup-gcloud@master
         with:
-          project_id: ${{ secrets.GCP_PROJECT }}
+          project_id: $GCP_PROJECT
           # this is the json key of the service account created on the project
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
+          service_account_key: $GCP_CREDENTIALS 
           export_default_credentials: true
 
       # Deploy the app using kubernetes (deploy.yml)
