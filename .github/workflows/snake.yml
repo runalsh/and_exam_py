@@ -19,7 +19,7 @@ jobs:
         shell: bash
     name: Terraform
     env:
-        gcp_cred: ${{ secrets.GCP_CREDENTIALS }}
+        credentials: ${{ secrets.GCP_CREDENTIALS }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
