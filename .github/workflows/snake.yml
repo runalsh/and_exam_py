@@ -37,7 +37,7 @@ jobs:
 
       # дикая дичь. проаганда env не влияет на последующие файлы. надо поправить как-то 
       # todo
-       - name: Env proj name to Terraform
+      - name: Env proj name to Terraform
         env:
          PROJECT_NAME: ${{ secrets.GCP_PROJECT }}
         run: |
