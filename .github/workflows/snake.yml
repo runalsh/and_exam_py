@@ -27,7 +27,7 @@ jobs:
          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
               echo "$GOOGLE_CREDENTIALS" > credentials.json
-              ls la
+              ls -la
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
