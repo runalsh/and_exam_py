@@ -18,6 +18,8 @@ jobs:
         working-directory: deployk8s
         shell: bash
     name: Terraform
+    env:
+        gcp_cred: ${{ secrets.GCP_CREDENTIALS }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
