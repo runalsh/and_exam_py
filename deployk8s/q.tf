@@ -129,7 +129,6 @@ module "gke" {
 
 module "gcr-cleaner" {
   source  = "mirakl/gcr-cleaner/google"
-  version = "1.0.0"
 
   app_engine_application_location = "europe-west4"
   gcr_repositories = [
