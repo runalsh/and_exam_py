@@ -92,6 +92,7 @@ jobs:
         # Disabling shallow clone is recommended for improving relevancy of reporting
         fetch-depth: 0
         args: >
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.organization=runalsh
             -Dsonar.projectKey=runalsh_and_exam_py
             -Dsonar.verbose=true
