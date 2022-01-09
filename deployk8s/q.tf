@@ -132,7 +132,6 @@ module "gke" {
 module "gcr_cleaner" {
   source  = "mirakl/gcr-cleaner/google"
   version = "0.5.0"
-  google_project_id = "winter-cab-337613"
   app_engine_application_location = "europe-west4"
   gcr_repositories = [
     {
