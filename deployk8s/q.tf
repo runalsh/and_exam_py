@@ -125,25 +125,23 @@ module "gke" {
       service_account    = var.service_account
       preemptible        = false
       initial_node_count = var.initial_node_count
-    },
+    }
   ]
 }
 
 module "gcr_cleaner" {
   source  = "mirakl/gcr-cleaner/google"
-  version = "1.0.0"
-
+  version = "0.5.0"
+  google_project_id = "winter-cab-337613"
   app_engine_application_location = "europe-west4"
   gcr_repositories = [
     {
       storage_region = "eu"
       repositories = [
         {
-          # in `test/python` repository, delete all images older than 30 days (720h)
-          name  = "test/python"
-          grace = "720h"
-        }
-      ]
-    }
+          name = "gcr.io/winter-cab-337613/py-app"
+        }  ]
+  }
+
   ]
-}
+  }
