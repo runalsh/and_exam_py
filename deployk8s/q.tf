@@ -1,4 +1,3 @@
-
 provider "google" {
   credentials = var.credentials
   project     = var.project_id
@@ -71,6 +70,23 @@ resource "google_storage_bucket" "state-bucket" {
   versioning {
     enabled = true
   }
+  # force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "Delete"
+    }
+  }
+}
+
+output "urls" {
+  description = "Bucket URLs."
+  value = { for name, bucket in google_storage_bucket.buckets :
+    name => bucket.url
+  }
 }
 
 # здесь нельзя встаить вариэйблс. почему? да хз, чтобы страдали наверное
@@ -128,4 +144,3 @@ module "gke" {
     }
   ]
 }
-
