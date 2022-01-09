@@ -132,15 +132,22 @@ module "gke" {
 module "gcr_cleaner" {
   source  = "mirakl/gcr-cleaner/google"
   version = "0.5.0"
+
   app_engine_application_location = "europe-west4"
   gcr_repositories = [
     {
       storage_region = "eu"
       repositories = [
         {
-          name = "gcr.io/winter-cab-337613/py-app"
-        }  ]
-  }
-
+          # in `test/nginx` repository, delete all untagged images
+          name = "py-app"
+        },
+        {
+          # in `test/python` repository, delete all images older than 30 days (720h)
+          name  = "py-app"
+          grace = "20h"
+        }
+      ]
+    }
   ]
-  }
+}
