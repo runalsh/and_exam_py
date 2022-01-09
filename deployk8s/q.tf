@@ -3,7 +3,7 @@ provider "google" {
   credentials = var.credentials
   project     = var.project_id
   region      = var.region
-  # version = "~> 3.40.0"
+  version = "~> 4.50.0"
 
 }
 
