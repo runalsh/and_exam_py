@@ -1,9 +1,8 @@
-
 provider "google" {
   credentials = var.credentials
   project     = var.project_id
   region      = var.region
-  version = "~> 4.50.0"
+  # version = "~> 4.40.0"
 
 }
 
@@ -128,8 +127,9 @@ module "gke" {
   ]
 }
 
-module "gcr_cleaner" {
+module "gcr-cleaner" {
   source  = "mirakl/gcr-cleaner/google"
+  version = "1.0.0"
 
   app_engine_application_location = "europe-west4"
   gcr_repositories = [
