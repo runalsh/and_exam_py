@@ -139,10 +139,6 @@ module "gcr_cleaner" {
       storage_region = "eu"
       repositories = [
         {
-          # in `test/nginx` repository, delete all untagged images
-          name = "py-app"
-        },
-        {
           # in `test/python` repository, delete all images older than 30 days (720h)
           name  = "py-app"
           grace = "20h"
