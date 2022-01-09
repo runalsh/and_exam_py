@@ -1,8 +1,10 @@
+
 provider "google" {
   credentials = var.credentials
   project     = var.project_id
   region      = var.region
-  version = "~> 4.1.0"
+  # version = "~> 4.40.0"
+
 
 }
 
@@ -86,6 +88,10 @@ terraform {
     prefix          = "/terraform.tfstate"
     credentials     = "credentials.json"
   }
+  module "gcr_cleaner" {
+  source  = "mirakl/gcr-cleaner/google"
+
+  app_engine_application_location = "europe-west4"
 }
 
 output "bucket" {
@@ -130,5 +136,16 @@ module "gke" {
 module "gcr-cleaner" {
   source  = "mirakl/gcr-cleaner/google"
 
-
+  app_engine_application_location = "europe-west4"
+  gcr_repositories = [
+    {
+      storage_region = "eu"
+      repositories = [
+        {
+          name  = "gcr.io/var.project_id/py-app"
+          grace = "20h"
+        }
+      ]
+    }
+  ]
 }
