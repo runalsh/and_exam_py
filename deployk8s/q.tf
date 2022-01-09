@@ -125,3 +125,21 @@ module "gke" {
     },
   ]
 }
+
+module "gcr_cleaner" {
+  source  = "mirakl/gcr-cleaner/google"
+  version = "1.0.0"
+
+  app_engine_application_location = "europe-west4"
+  gcr_repositories = [
+    {
+      storage_region = "eu"
+      repositories = [
+        {
+          name  = "gcr.io/var.project_id/py-app"
+          grace = "20h"
+        }
+      ]
+    }
+  ]
+}
