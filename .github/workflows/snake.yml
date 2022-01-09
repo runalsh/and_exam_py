@@ -1,3 +1,4 @@
+
 on:
   push:
     branches: [ main ]
@@ -143,7 +144,7 @@ jobs:
       run: |
         pylint --exit-zero $(ls -R | grep .py$ | xargs)
  
- # #========================AND MAY BE BANDIT ===================================
+ # #======================== MAY BE GOSEC? ===================================
 
 
   dockerimagepush:
@@ -180,6 +181,7 @@ jobs:
     - name: Publish and Env GCP proj to Terraform
       run: |-
         docker push "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
+        docker image prune --all --filter "until=24h"
 
   deploykube:
     name: Deploy to GCP
