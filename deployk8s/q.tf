@@ -129,7 +129,7 @@ module "gke" {
   ]
 }
 
-module "gcr_cleaner" {
+ module "gcr_cleaner" {
   source  = "mirakl/gcr-cleaner/google"
   version = "0.5.0"
 
@@ -139,8 +139,7 @@ module "gcr_cleaner" {
       storage_region = "eu"
       repositories = [
         {
-          # in `test/python` repository, delete all images older than 30 days (720h)
-          name  = "py-app"
+          name  = "name/py-app"
           grace = "20h"
         }
       ]
