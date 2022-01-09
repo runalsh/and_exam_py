@@ -88,23 +88,6 @@ terraform {
     prefix          = "/terraform.tfstate"
     credentials     = "credentials.json"
   }
-  
-  module "gcr-cleaner" {
-  source  = "mirakl/gcr-cleaner/google"
-
-  app_engine_application_location = "europe-west4"
-  gcr_repositories = [
-    {
-      storage_region = "eu"
-      repositories = [
-        {
-          name  = "gcr.io/var.project_id/py-app"
-          grace = "20h"
-        }
-      ]
-    }
-  ]
-}
 }
 
 output "bucket" {
@@ -143,5 +126,27 @@ module "gke" {
       preemptible        = false
       initial_node_count = var.initial_node_count
     },
+  ]
+}
+
+module "gcr_cleaner" {
+  source  = "mirakl/gcr-cleaner/google"
+
+  app_engine_application_location = "europe-west4"
+  gcr_repositories = [
+    {
+      storage_region = "eu"
+      repositories = [
+        {
+          # in `test/nginx` repository, delete all untagged images
+          name = "test/nginx"
+        },
+        {
+          # in `test/python` repository, delete all images older than 30 days (720h)
+          name  = "test/python"
+          grace = "720h"
+        }
+      ]
+    }
   ]
 }
