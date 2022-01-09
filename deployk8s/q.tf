@@ -82,12 +82,7 @@ resource "google_storage_bucket" "state-bucket" {
   }
 }
 
-output "urls" {
-  description = "Bucket URLs."
-  value = { for name, bucket in google_storage_bucket.buckets :
-    name => bucket.url
-  }
-}
+
 
 # здесь нельзя встаить вариэйблс. почему? да хз, чтобы страдали наверное
 # можно обойти создать вручную через gcloud до инициализации terra, надо подумать как ещё 
