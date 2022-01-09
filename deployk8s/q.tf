@@ -1,9 +1,10 @@
+
 provider "google" {
   credentials = var.credentials
   project     = var.project_id
   region      = var.region
   # version = "~> 3.40.0"
-  version = "~> 3.90.0"
+
 }
 
 variable "credentials" {
@@ -129,7 +130,7 @@ module "gke" {
 
 module "gcr_cleaner" {
   source  = "mirakl/gcr-cleaner/google"
-  version = "1.0.0"
+  version = "0.5.0"
 
   app_engine_application_location = "europe-west4"
   gcr_repositories = [
