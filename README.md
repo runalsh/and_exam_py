@@ -31,7 +31,7 @@ TELEGRAM_TO
 
 TELEGRAM_TOKEN
 
-MAIL_FOR_INFO -  here you email to get notifocations, ex fsb@fsb.ru
+MAIL_FOR_INFO -  here you email to get notifications, ex fsb@fsb.ru
 
 YANDEX_MAIL_PASSWORD - password from you SMTP opened account
 
