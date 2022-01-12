@@ -65,6 +65,8 @@ jobs:
       - name: Terraform Apply
     #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -lock=false -auto-approve
+        continue-on-error: true
+        
       - name: send massage to tg
         if: always()
         uses: appleboy/telegram-action@master
