@@ -23,7 +23,8 @@ jobs:
         working-directory: deployk8s
         shell: bash
     name: Terraform
-
+    env:
+      ACTION: Deploy infrastructure with Terraform
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -65,11 +66,41 @@ jobs:
       - name: Terraform Apply
     #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -lock=false -auto-approve
+      - name: send massage to tg
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            *Commit message:* ${{ github.event.commits[0].message }}
+            *Repository commit:*  https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            *Result:* ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+            *Action:* ${{ env.ACTION }}
+            *Status:* ${{ job.status }}
+          format: "markdown"
+          disable_web_page_preview: true
+          
+      # - name: Send Gmail notification
+        # if: always()
+        # uses: dawidd6/action-send-mail@v3
+        # with:
+            # server_address: smtp.yandex.ru
+            # server_port: 465
+            # username: ${{secrets.YANDEX_MAIL_USERNAME}}
+            # password: ${{secrets.YANDEX_MAIL_PASSWORD}}
+            # subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+            # to: ${{ secrets.MAIL_FOR_INFO }}
+            # from: github action ${{github.sha}} on ${{github.repository}}
+            # body: Build job of ${{github.repository}} completed successfully!
+            # attachments: snyk.sarif  
 
   pytest:
     needs: initkube
     runs-on: ubuntu-latest
-
+    env:
+      ACTION: Test Pytest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -84,11 +115,42 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: send massage to tg
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            *Commit message:* ${{ github.event.commits[0].message }}
+            *Repository commit:*  https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            *Result:* ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+            *Action:* ${{ env.ACTION }}
+            *Status:* ${{ job.status }}
+          format: "markdown"
+          disable_web_page_preview: true
+          
+      # - name: Send Gmail notification
+        # if: always()
+        # uses: dawidd6/action-send-mail@v3
+        # with:
+            # server_address: smtp.yandex.ru
+            # server_port: 465
+            # username: ${{secrets.YANDEX_MAIL_USERNAME}}
+            # password: ${{secrets.YANDEX_MAIL_PASSWORD}}
+            # subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+            # to: ${{ secrets.MAIL_FOR_INFO }}
+            # from: github action ${{github.sha}} on ${{github.repository}}
+            # body: Build job of ${{github.repository}} completed successfully!
+            # attachments: snyk.sarif    
 
 
   bandit:
     runs-on: ubuntu-latest
     needs: pytest
+    env:
+      ACTION: Test: Bandit test
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -103,6 +165,35 @@ jobs:
     - name: analyze source code with bandit
       run: |
         bandit -c bandit.yml -s B104 -r .
+    - name: send massage to tg
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            *Commit message:* ${{ github.event.commits[0].message }}
+            *Repository commit:*  https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            *Result:* ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+            *Action:* ${{ env.ACTION }}
+            *Status:* ${{ job.status }}
+          format: "markdown"
+          disable_web_page_preview: true
+          
+      # - name: Send Gmail notification
+        # if: always()
+        # uses: dawidd6/action-send-mail@v3
+        # with:
+            # server_address: smtp.yandex.ru
+            # server_port: 465
+            # username: ${{secrets.YANDEX_MAIL_USERNAME}}
+            # password: ${{secrets.YANDEX_MAIL_PASSWORD}}
+            # subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+            # to: ${{ secrets.MAIL_FOR_INFO }}
+            # from: github action ${{github.sha}} on ${{github.repository}}
+            # body: Build job of ${{github.repository}} completed successfully!
+            # attachments: snyk.sarif    
     
     
       # # sonarcloud:
@@ -129,6 +220,8 @@ jobs:
   pylint:
     needs: bandit
     runs-on: ubuntu-latest
+    env:
+      ACTION: Test: Linter check
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -143,6 +236,35 @@ jobs:
     - name: Lint with pylint
       run: |
         pylint --exit-zero $(ls -R | grep .py$ | xargs)
+    - name: send massage to tg
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            *Commit message:* ${{ github.event.commits[0].message }}
+            *Repository commit:*  https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            *Result:* ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+            *Action:* ${{ env.ACTION }}
+            *Status:* ${{ job.status }}
+          format: "markdown"
+          disable_web_page_preview: true
+          
+      # - name: Send Gmail notification
+        # if: always()
+        # uses: dawidd6/action-send-mail@v3
+        # with:
+            # server_address: smtp.yandex.ru
+            # server_port: 465
+            # username: ${{secrets.YANDEX_MAIL_USERNAME}}
+            # password: ${{secrets.YANDEX_MAIL_PASSWORD}}
+            # subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+            # to: ${{ secrets.MAIL_FOR_INFO }}
+            # from: github action ${{github.sha}} on ${{github.repository}}
+            # body: Build job of ${{github.repository}} completed successfully!
+            # attachments: snyk.sarif    
  
  # #======================== MAY BE GOSEC? ===================================
 
@@ -151,7 +273,8 @@ jobs:
     needs: pylint
     name: Setup, build, publish, and deploy
     runs-on: ubuntu-latest
-
+    env:
+      ACTION: Build, push Docker image to GCR
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -182,10 +305,41 @@ jobs:
       run: |-
         docker push "gcr.io/${{ secrets.GCP_PROJECT }}/py-app:latest"
         docker image prune --all --filter "until=24h"
+    - name: send massage to tg
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            *Commit message:* ${{ github.event.commits[0].message }}
+            *Repository commit:*  https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            *Result:* ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+            *Action:* ${{ env.ACTION }}
+            *Status:* ${{ job.status }}
+          format: "markdown"
+          disable_web_page_preview: true
+          
+      # - name: Send Gmail notification
+        # if: always()
+        # uses: dawidd6/action-send-mail@v3
+        # with:
+            # server_address: smtp.yandex.ru
+            # server_port: 465
+            # username: ${{secrets.YANDEX_MAIL_USERNAME}}
+            # password: ${{secrets.YANDEX_MAIL_PASSWORD}}
+            # subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+            # to: ${{ secrets.MAIL_FOR_INFO }}
+            # from: github action ${{github.sha}} on ${{github.repository}}
+            # body: Build job of ${{github.repository}} completed successfully!
+            # attachments: snyk.sarif    
 
   deploykube:
     name: Deploy to GCP
     runs-on: ubuntu-latest
+    env:
+      ACTION: Deploy GKE and pull image
     defaults:
       run:
         working-directory: deployk8s
@@ -215,3 +369,32 @@ jobs:
           kubectl rollout restart deployment/$IMAGE
           kubectl rollout status -w deployment/$IMAGE
           kubectl get all
+      - name: send massage to tg
+        if: always()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            *Commit message:* ${{ github.event.commits[0].message }}
+            *Repository commit:*  https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            *Result:* ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}
+            *Action:* ${{ env.ACTION }}
+            *Status:* ${{ job.status }}
+          format: "markdown"
+          disable_web_page_preview: true
+          
+      # - name: Send Gmail notification
+        # if: always()
+        # uses: dawidd6/action-send-mail@v3
+        # with:
+            # server_address: smtp.yandex.ru
+            # server_port: 465
+            # username: ${{secrets.YANDEX_MAIL_USERNAME}}
+            # password: ${{secrets.YANDEX_MAIL_PASSWORD}}
+            # subject: ${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}
+            # to: ${{ secrets.MAIL_FOR_INFO }}
+            # from: github action ${{github.sha}} on ${{github.repository}}
+            # body: Build job of ${{github.repository}} completed successfully!
+            # attachments: snyk.sarif
